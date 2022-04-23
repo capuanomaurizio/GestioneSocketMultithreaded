@@ -21,14 +21,14 @@ import java.sql.Timestamp;
  */
 public class Client {
     
-    InetAddress indirizzoServer;
-    int portaServer;
-    Socket socket;
-    BufferedReader tastiera;
-    BufferedReader inDalServer;
-    BufferedWriter outVersoServer;
-    String messaggioRicevuto;
-    String messaggioDaInviare;
+    private InetAddress indirizzoServer;
+    private int portaServer;
+    private Socket socket;
+    private BufferedReader tastiera;
+    private BufferedReader inDalServer;
+    private BufferedWriter outVersoServer;
+    private String messaggioRicevuto;
+    private String messaggioDaInviare;
     
     public Client(InetAddress indirizzo, int porta){
         try {
@@ -43,6 +43,11 @@ public class Client {
             System.out.println("Errore nella connessione al server");
             System.err.print(ex);
         }
+    }
+    
+    public void creaTimer(){
+        TimerThread timer = new TimerThread(Integer.parseInt(leggi()));
+        timer.start();
     }
     
     public void scrivi(){

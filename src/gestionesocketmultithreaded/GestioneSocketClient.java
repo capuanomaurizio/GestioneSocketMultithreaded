@@ -18,10 +18,9 @@ public class GestioneSocketClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Client client;
         try {
-            client = new Client(InetAddress.getLocalHost(), 4444);
-            
+            Client client = new Client(InetAddress.getLocalHost(), 4444);
+            client.creaTimer();
         } catch (UnknownHostException ex) {
             System.err.print(ex);
         }
