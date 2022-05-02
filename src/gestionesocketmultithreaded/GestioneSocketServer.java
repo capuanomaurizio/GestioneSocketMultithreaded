@@ -19,7 +19,6 @@ public class GestioneSocketServer {
         Server server = new Server(4444, 20);
         while(true){
             server.attendi(clientTimeOut);
-            server.scrivi(String.valueOf(clientTimeOut));
         }
     }
     

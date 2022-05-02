@@ -20,7 +20,8 @@ public class GestioneSocketClient {
     public static void main(String[] args) {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 4444);
-            client.creaTimer();
+            //client.creaTimer();
+            System.out.print(client.leggi());
         } catch (UnknownHostException ex) {
             System.err.print(ex);
         }

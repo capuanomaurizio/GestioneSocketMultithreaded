@@ -25,10 +25,6 @@ public class Server {
     private ServerSocket serverSocket;
     private int serverTimeOut;
     private Socket socket;
-    private BufferedReader inDalClient;
-    private BufferedWriter outVersoClient;
-    private String messaggioRicevuto;
-    private String messaggioDaInviare;
     
     public Server(int porta, int timeOut){
         try {
@@ -54,57 +50,13 @@ public class Server {
         try {
             socket = serverSocket.accept();
             socket.setSoTimeout(clientTimeOut*1000);
-            System.out.print("Connessione stabilita: "+socket);
-            System.out.println(", setSoTimeout aggiornato");
+            System.out.println("Connessione stabilita: "+socket+", setSoTimeout aggiornato");
+            ClientHandler handler = new ClientHandler(socket);
+            new Thread(handler).start();
         } catch (SocketException ex) {
             System.out.println(ex);
         } catch (IOException ex) {
             System.out.print(ex);
-        }
-    }
-    
-    public void scrivi(String messaggioDaInviare){
-        try {
-            //Inizializzazione degli oggetti di comunicazione lato server
-            outVersoClient = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            //Invio del messaggio
-            outVersoClient.write(messaggioDaInviare+"\n");
-            outVersoClient.flush();
-        } catch (IOException ex) {
-            System.err.print(ex);
-        }
-    }
-    
-    public String leggi(){
-        try {
-            //Inizializzazione degli oggetti di comunicazione lato server
-            inDalClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //Lettura del messaggio
-            messaggioRicevuto = inDalClient.readLine();
-            return messaggioRicevuto;
-        } catch (IOException ex) {
-            System.err.print(ex);
-            return "-1";
-        }
-    }
-    
-    public void inviaTimeStamp(){
-        messaggioRicevuto = leggi();
-        switch(messaggioRicevuto){
-            case "data": messaggioDaInviare = Long.toString(System.currentTimeMillis());
-                         System.out.println("Invio timestamp");
-                         break;
-            default: messaggioDaInviare = "invalid"; break;
-        }            
-        scrivi(messaggioDaInviare);
-    }
-    
-    public void chiudi(){
-        try {
-            //Chiusura della connessione
-            socket.close();
-        } catch (IOException ex) {
-            System.err.print(ex);
         }
     }
 }
